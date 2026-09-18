@@ -5,563 +5,289 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#6c4df6">
 
-  <title>رَزين | تداول الكتب الجامعية</title>
+  <title>رَزين | منصة تداول وبيع الكتب الجامعية</title>
+  <meta name="description" content="رَزين منصة عربية تربط طلاب الجامعات لبيع الكتب الجامعية أو مقايضتها، مع البحث والفلترة حسب التخصص ونوع العملية.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
-
-  <!-- مكتبة QR -->
-  <script src="https://unpkg.com/html5-qrcode" defer></script>
 </head>
 
 <body>
 
 <header class="navbar">
+  <div class="container nav-content">
 
-  <a href="#home" class="logo">
-    رَزين <span>📚</span>
-  </a>
+    <a href="#home" class="logo">
+      رَزين <span aria-hidden="true">📚</span>
+    </a>
 
-  <nav id="nav">
-    <a href="#home">الرئيسية</a>
-    <a href="#books">الكتب</a>
-    <a href="#add">أضف كتاب</a>
-    <a href="#about">عن المشروع</a>
-  </nav>
+    <nav id="nav" class="nav-links">
+      <a href="#home">الرئيسية</a>
+      <a href="#books">الكتب</a>
+      <a href="#add">أضف كتاب</a>
+      <a href="#about">عن المشروع</a>
+    </nav>
 
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <button class="menu-btn" aria-label="القائمة" onclick="toggleMenu()">☰</button>
 
+  </div>
 </header>
 
 
 <main>
 
 <!-- ================= HERO ================= -->
-
 <section id="home" class="hero">
+  <div class="container hero-content">
 
-  <div class="hero-content">
+    <div class="hero-text">
+      <span class="small-title">منصة تداول الكتب الجامعية</span>
 
-    <span class="small-title">
-      منصة تداول الكتب الجامعية
-    </span>
+      <h1>
+        كتابك القديم
+        <br>
+        <span>قد يكون مرجع طالبٍ آخر.</span>
+      </h1>
 
-    <h1>
-      كتابك القديم
-      <br>
-      <span>قد يكون مرجع طالب آخر.</span>
-    </h1>
+      <p>
+        رَزين يربط الطلاب ببعضهم لبيع الكتب الجامعية
+        بأسعار مخفّضة أو مقايضتها بكتب أخرى،
+        مع البحث والفلترة حسب التخصص ونوع العملية.
+      </p>
 
-    <p>
-      رَزين يربط الطلاب ببعضهم لبيع الكتب الجامعية
-      بأسعار مخفضة أو مقايضتها بكتب أخرى،
-      مع البحث حسب التخصص والموقع.
-    </p>
+      <div class="hero-buttons">
+        <a href="#books" class="btn btn-primary">تصفّح الكتب</a>
+        <a href="#add" class="btn btn-secondary">أضف كتابك</a>
+      </div>
 
-    <div class="hero-buttons">
-
-      <a href="#books" class="btn">
-        تصفح الكتب
-      </a>
-
-      <a href="#add" class="btn secondary">
-        أضف كتابك
-      </a>
-
+      <div class="stats">
+        <div>
+          <strong id="totalBooks">0</strong>
+          <span>كتاب متاح</span>
+        </div>
+        <div>
+          <strong>🔄</strong>
+          <span>بيع ومقايضة</span>
+        </div>
+        <div>
+          <strong>🎓</strong>
+          <span>من طالب لطالب</span>
+        </div>
+      </div>
     </div>
 
-    <div class="stats">
+    <div class="hero-visual" aria-hidden="true">
+      <div class="floating-card top">📍 الأقرب إليك</div>
 
-      <div>
-        <strong id="totalBooks">0</strong>
-        <span>كتاب</span>
+      <div class="books-animation">
+        <div class="book book-one">JAVA<small>101</small></div>
+        <div class="book book-two">DATABASE<small>SYSTEMS</small></div>
+        <div class="book book-three">DATA<small>STRUCTURES</small></div>
       </div>
 
-      <div>
-        <strong>🔄</strong>
-        <span>بيع ومقايضة</span>
-      </div>
-
-      <div>
-        <strong>📍</strong>
-        <span>بحث بالموقع</span>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="hero-visual">
-
-    <div class="floating-card top">
-      📍 الأقرب إليك
-    </div>
-
-    <div class="books-animation">
-
-      <div class="book book-one">
-        JAVA
-        <small>101</small>
-      </div>
-
-      <div class="book book-two">
-        DATABASE
-        <small>SYSTEMS</small>
-      </div>
-
-      <div class="book book-three">
-        DATA
-        <small>STRUCTURES</small>
-      </div>
-
-    </div>
-
-    <div class="floating-card bottom">
-      🔎 مطابقة ذكية
+      <div class="floating-card bottom">🔎 بحث ذكي</div>
     </div>
 
   </div>
-
 </section>
 
 
 <!-- ================= FEATURES ================= -->
+<section class="section">
+  <div class="container">
+    <div class="features">
 
-<section class="features">
+      <div class="feature-card">
+        <div class="feature-icon">📷</div>
+        <h3>صور واضحة</h3>
+        <p>ارفع صورة غلاف الكتاب ليراها الطلاب قبل الطلب.</p>
+      </div>
 
-  <div class="feature">
+      <div class="feature-card">
+        <div class="feature-icon">🔎</div>
+        <h3>بحث وفلترة</h3>
+        <p>ابحث بالاسم أو المؤلف وفلتر حسب التخصص ونوع العملية.</p>
+      </div>
 
-    <div class="feature-icon">📷</div>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>المقايضة</h3>
+        <p>اعرض كتابك واستبدله بكتاب يحتاجه طالب آخر.</p>
+      </div>
 
-    <h3>
-      مسح QR
-    </h3>
-
-    <p>
-      امسح رمز QR الموجود على الكتاب
-      لإدخال بياناته بسرعة.
-    </p>
-
+    </div>
   </div>
-
-
-  <div class="feature">
-
-    <div class="feature-icon">📍</div>
-
-    <h3>
-      الأقرب إليك
-    </h3>
-
-    <p>
-      استخدم الموقع لعرض النسخ المتوفرة
-      بالقرب منك.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <div class="feature-icon">🔄</div>
-
-    <h3>
-      المقايضة
-    </h3>
-
-    <p>
-      اعرض كتابك واستبدله بكتاب
-      يحتاجه طالب آخر.
-    </p>
-
-  </div>
-
 </section>
 
 
 <!-- ================= BOOKS ================= -->
+<section id="books" class="section section-alt">
+  <div class="container">
 
-<section id="books" class="section">
-
-  <div class="section-heading">
-
-    <div>
-      <span class="small-title">
-        المكتبة
-      </span>
-
-      <h2>
-        ابحث عن مرجعك
-      </h2>
+    <div class="section-heading">
+      <div>
+        <span class="small-title">المكتبة</span>
+        <h2>ابحث عن مرجعك</h2>
+      </div>
     </div>
 
-    <button
-      class="location-button"
-      onclick="getLocation()"
-    >
-      📍 تحديد موقعي
-    </button>
+    <div class="filters">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔎 ابحث باسم الكتاب أو المادة أو المؤلف"
+        oninput="filterBooks()"
+      >
+
+      <select id="specialtyFilter" onchange="filterBooks()">
+        <option value="">كل التخصصات</option>
+        <option value="علوم الحاسب">علوم الحاسب</option>
+        <option value="هندسة البرمجيات">هندسة البرمجيات</option>
+        <option value="نظم المعلومات">نظم المعلومات</option>
+        <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
+        <option value="الرياضيات">الرياضيات</option>
+        <option value="إدارة الأعمال">إدارة الأعمال</option>
+      </select>
+
+      <select id="tradeFilter" onchange="filterBooks()">
+        <option value="">بيع أو مقايضة</option>
+        <option value="بيع">بيع</option>
+        <option value="مقايضة">مقايضة</option>
+      </select>
+    </div>
+
+    <div id="booksContainer" class="books-grid"></div>
+
+    <div id="emptyMessage" class="empty hidden">
+      لا توجد كتب مطابقة للبحث.
+    </div>
 
   </div>
-
-
-  <div class="filters">
-
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="🔎 اسم الكتاب أو المادة أو المؤلف"
-      oninput="filterBooks()"
-    >
-
-
-    <select
-      id="specialtyFilter"
-      onchange="filterBooks()"
-    >
-
-      <option value="">
-        كل التخصصات
-      </option>
-
-      <option value="علوم الحاسب">
-        علوم الحاسب
-      </option>
-
-      <option value="هندسة البرمجيات">
-        هندسة البرمجيات
-      </option>
-
-      <option value="نظم المعلومات">
-        نظم المعلومات
-      </option>
-
-      <option value="الذكاء الاصطناعي">
-        الذكاء الاصطناعي
-      </option>
-
-    </select>
-
-
-    <select
-      id="tradeFilter"
-      onchange="filterBooks()"
-    >
-
-      <option value="">
-        بيع أو مقايضة
-      </option>
-
-      <option value="بيع">
-        بيع
-      </option>
-
-      <option value="مقايضة">
-        مقايضة
-      </option>
-
-    </select>
-
-  </div>
-
-
-  <div id="locationMessage" class="location-message"></div>
-
-
-  <div
-    id="booksContainer"
-    class="books-grid"
-  ></div>
-
-
-  <div
-    id="emptyMessage"
-    class="empty hidden"
-  >
-    لا توجد كتب مطابقة للبحث.
-  </div>
-
 </section>
 
 
 <!-- ================= ADD BOOK ================= -->
+<section id="add" class="section">
+  <div class="container">
 
-<section id="add" class="section add-section">
-
-  <div class="section-heading">
-
-    <div>
-
-      <span class="small-title">
-        شارك كتابك
-      </span>
-
-      <h2>
-        أضف كتابًا جديدًا
-      </h2>
-
-      <p>
-        أضف بيانات الكتاب ليظهر للطلاب.
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <div class="form-card">
-
-    <div class="qr-area">
-
-      <button
-        class="qr-button"
-        onclick="startQR()"
-      >
-        📷 مسح QR للكتاب
-      </button>
-
-      <span>
-        أو أدخل البيانات يدويًا
-      </span>
-
-    </div>
-
-
-    <div
-      id="qr-reader"
-      class="qr-reader hidden"
-    ></div>
-
-
-    <form
-      id="bookForm"
-      onsubmit="addBook(event)"
-    >
-
-      <div class="form-grid">
-
-        <label>
-          اسم الكتاب
-
-          <input
-            id="bookName"
-            required
-            placeholder="مثال: أساسيات Java"
-          >
-
-        </label>
-
-
-        <label>
-          اسم المادة
-
-          <input
-            id="bookSubject"
-            required
-            placeholder="مثال: برمجة 101"
-          >
-
-        </label>
-
-
-        <label>
-          المؤلف
-
-          <input
-            id="bookAuthor"
-            placeholder="اسم المؤلف"
-          >
-
-        </label>
-
-
-        <label>
-          التخصص
-
-          <select
-            id="bookSpecialty"
-            required
-          >
-
-            <option value="">
-              اختر التخصص
-            </option>
-
-            <option>
-              علوم الحاسب
-            </option>
-
-            <option>
-              هندسة البرمجيات
-            </option>
-
-            <option>
-              نظم المعلومات
-            </option>
-
-            <option>
-              الذكاء الاصطناعي
-            </option>
-
-          </select>
-
-        </label>
-
-
-        <label>
-          نوع العملية
-
-          <select
-            id="bookTrade"
-            onchange="togglePrice()"
-          >
-
-            <option value="بيع">
-              بيع
-            </option>
-
-            <option value="مقايضة">
-              مقايضة
-            </option>
-
-          </select>
-
-        </label>
-
-
-        <label id="priceField">
-
-          السعر بالريال
-
-          <input
-            id="bookPrice"
-            type="number"
-            min="0"
-            placeholder="مثال: 40"
-          >
-
-        </label>
-
-
-        <label>
-
-          الكتاب المطلوب للمقايضة
-
-          <input
-            id="wantedBook"
-            placeholder="مثال: قواعد البيانات"
-          >
-
-        </label>
-
-
-        <label>
-
-          الجامعة / الموقع
-
-          <input
-            id="bookLocation"
-            placeholder="مثال: جامعة الملك سعود"
-          >
-
-        </label>
-
+    <div class="section-heading">
+      <div>
+        <span class="small-title">شارك كتابك</span>
+        <h2>أضف كتابًا جديدًا</h2>
+        <p class="muted">أضف بيانات الكتاب وصورته ليظهر للطلاب مباشرة.</p>
       </div>
-
-
-      <button
-        class="btn submit"
-        type="submit"
-      >
-        نشر الكتاب
-      </button>
-
-    </form>
-
-  </div>
-
-</section>
-
-
-<!-- ================= MATCHING ================= -->
-
-<section class="section">
-
-  <div class="matching">
-
-    <div>
-
-      <span class="small-title">
-        المطابقة الذكية
-      </span>
-
-      <h2>
-        تبحثين عن كتاب محدد؟
-      </h2>
-
-      <p>
-        اكتبي اسم الكتاب في البحث،
-        وسيعرض رَزين الكتب المطابقة.
-        وفي حالة المقايضة يعرض الكتب
-        التي تتوافق مع الكتاب المطلوب.
-      </p>
-
     </div>
 
-    <a
-      href="#books"
-      class="btn white"
-    >
-      ابدأ البحث
-    </a>
+    <div class="form-card">
+      <form id="bookForm" onsubmit="addBook(event)">
+
+        <!-- Image upload -->
+        <div class="image-upload">
+          <div class="image-preview" id="imagePreview">
+            <span class="image-placeholder">📚<br><small>لا توجد صورة بعد</small></span>
+          </div>
+          <label class="upload-btn">
+            📷 رفع صورة الكتاب
+            <input
+              type="file"
+              id="bookImage"
+              accept="image/*"
+              onchange="previewImage(event)"
+              hidden
+            >
+          </label>
+          <button type="button" class="clear-image hidden" id="clearImage" onclick="clearImage()">إزالة الصورة</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            اسم الكتاب
+            <input id="bookName" required placeholder="مثال: أساسيات Java">
+          </label>
+
+          <label>
+            اسم المادة
+            <input id="bookSubject" required placeholder="مثال: برمجة 101">
+          </label>
+
+          <label>
+            المؤلف
+            <input id="bookAuthor" placeholder="اسم المؤلف">
+          </label>
+
+          <label>
+            التخصص
+            <select id="bookSpecialty" required>
+              <option value="">اختر التخصص</option>
+              <option>علوم الحاسب</option>
+              <option>هندسة البرمجيات</option>
+              <option>نظم المعلومات</option>
+              <option>الذكاء الاصطناعي</option>
+              <option>الرياضيات</option>
+              <option>إدارة الأعمال</option>
+            </select>
+          </label>
+
+          <label>
+            نوع العملية
+            <select id="bookTrade" onchange="togglePrice()">
+              <option value="بيع">بيع</option>
+              <option value="مقايضة">مقايضة</option>
+            </select>
+          </label>
+
+          <label id="priceField">
+            السعر بالريال
+            <input id="bookPrice" type="number" min="0" placeholder="مثال: 40">
+          </label>
+
+          <label id="wantedField" class="hidden">
+            الكتاب المطلوب للمقايضة
+            <input id="wantedBook" placeholder="مثال: قواعد البيانات">
+          </label>
+
+          <label>
+            الجامعة / الموقع
+            <input id="bookLocation" placeholder="مثال: جامعة الملك سعود">
+          </label>
+        </div>
+
+        <button class="btn btn-primary submit" type="submit">نشر الكتاب</button>
+      </form>
+    </div>
 
   </div>
-
 </section>
 
 
 <!-- ================= ABOUT ================= -->
-
-<section id="about" class="section about">
-
-  <span class="small-title">
-    مشروع علوم الحاسب
-  </span>
-
-  <h2>
-    عن رَزين
-  </h2>
-
-  <p>
-    رَزين هو نموذج أولي لمنصة تربط الطلاب
-    لتداول الكتب الجامعية عن طريق البيع
-    أو المقايضة، مع توفير البحث حسب
-    التخصص والموقع الجغرافي.
-  </p>
-
+<section id="about" class="section section-alt about">
+  <div class="container about-content">
+    <span class="small-title">مشروع علوم الحاسب</span>
+    <h2>عن رَزين</h2>
+    <p>
+      رَزين منصة تربط الطلاب لتداول الكتب الجامعية عن طريق البيع
+      أو المقايضة، مع توفير البحث والفلترة حسب التخصص ونوع العملية.
+      الهدف تقليل تكلفة الكتب وإعادة الاستفادة منها بين الطلاب.
+    </p>
+  </div>
 </section>
 
 </main>
 
 
 <footer>
-
-  <strong>
-    رَزين 📚
-  </strong>
-
-  <span>
-    من طالب إلى طالب
-  </span>
-
+  <div class="container">
+    <strong>رَزين 📚</strong>
+    <p>من طالب إلى طالب</p>
+  </div>
 </footer>
 
 
-<div
-  id="toast"
-  class="toast"
-></div>
-
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script src="script.js"></script>
 

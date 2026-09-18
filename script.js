@@ -1,158 +1,66 @@
-let books = JSON.parse(localStorage.getItem("razenBooks")) || [
+// ===== بيانات الكتب =====
+const STORAGE_KEY = "razenBooks";
+
+const defaultBooks = [
   {
     name: "مقدمة في البرمجة",
+    subject: "برمجة 101",
     author: "د. أحمد محمد",
-    subject: "برمجة",
     specialty: "علوم الحاسب",
-    price: 35,
     type: "بيع",
-    location: "الرياض",
-    distance: 2
+    price: 35,
+    wanted: "",
+    location: "جامعة الملك سعود",
+    image: ""
   },
   {
     name: "قواعد البيانات",
-    author: "د. خالد علي",
     subject: "قواعد بيانات",
+    author: "د. خالد علي",
     specialty: "علوم الحاسب",
-    price: 40,
-    type: "تبادل",
-    location: "الرياض",
-    distance: 4
+    type: "مقايضة",
+    price: 0,
+    wanted: "هياكل البيانات",
+    location: "جامعة الملك عبدالعزيز",
+    image: ""
   },
   {
     name: "هندسة البرمجيات",
-    author: "د. سارة",
     subject: "هندسة برمجيات",
+    author: "د. سارة عبدالله",
     specialty: "هندسة البرمجيات",
-    price: 30,
     type: "بيع",
-    location: "الرياض",
-    distance: 6
+    price: 45,
+    wanted: "",
+    location: "جامعة الإمام",
+    image: ""
   }
 ];
 
-const booksContainer = document.getElementById("booksContainer");
-const searchInput = document.getElementById("searchInput");
-const specialtyFilter = document.getElementById("specialtyFilter");
-const typeFilter = document.getElementById("typeFilter");
-const addBookForm = document.getElementById("addBookForm");
+let books = loadBooks();
+let currentImage = "";
+
+function loadBooks() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (Array.isArray(saved) && saved.length) return saved;
+  } catch (e) {
+    console.log("[v0] تعذر قراءة الكتب المحفوظة:", e.message);
+  }
+  return [...defaultBooks];
+}
 
 function saveBooks() {
-  localStorage.setItem("razenBooks", JSON.stringify(books));
-}
-
-function showToast(message) {
-  const toast = document.getElementById("toast");
-
-  if (!toast) return;
-
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2500);
-}
-
-function renderBooks() {
-  if (!booksContainer) return;
-
-  const search = searchInput
-    ? searchInput.value.toLowerCase().trim()
-    : "";
-
-  const specialty = specialtyFilter
-    ? specialtyFilter.value
-    : "";
-
-  const type = typeFilter
-    ? typeFilter.value
-    : "";
-
-  const filteredBooks = books.filter(book => {
-
-    const matchesSearch =
-      book.name.toLowerCase().includes(search) ||
-      book.author.toLowerCase().includes(search) ||
-      book.subject.toLowerCase().includes(search);
-
-    const matchesSpecialty =
-      !specialty || book.specialty === specialty;
-
-    const matchesType =
-      !type || book.type === type;
-
-    return matchesSearch && matchesSpecialty && matchesType;
-  });
-
-  booksContainer.innerHTML = "";
-
-  if (filteredBooks.length === 0) {
-    booksContainer.innerHTML = `
-      <div style="grid-column:1/-1;text-align:center;padding:40px;">
-        <h3>لا توجد كتب مطابقة 🔍</h3>
-        <p style="color:#777;">جربي البحث عن كتاب آخر.</p>
-      </div>
-    `;
-    return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+  } catch (e) {
+    console.log("[v0] تعذر حفظ الكتب:", e.message);
   }
-
-  filteredBooks.forEach((book, index) => {
-
-    const card = document.createElement("div");
-    card.className = "book-card";
-
-    card.innerHTML = `
-      <div class="book-cover">📚</div>
-
-      <div class="book-info">
-
-        <span class="book-type">
-          ${book.type}
-        </span>
-
-        <h3>${escapeHTML(book.name)}</h3>
-
-        <p>
-          المؤلف: ${escapeHTML(book.author)}
-        </p>
-
-        <p>
-          التخصص: ${escapeHTML(book.specialty)}
-        </p>
-
-        <p>
-          الموقع: ${escapeHTML(book.location)}
-        </p>
-
-        <p>
-          📍 يبعد تقريبًا ${book.distance || 0} كم
-        </p>
-
-        <div class="book-price">
-          ${book.type === "تبادل"
-            ? "تبادل كتاب"
-            : book.price + " ريال"}
-        </div>
-
-        <button
-          class="btn btn-primary"
-          onclick="requestBook(${index})">
-          ${book.type === "تبادل"
-            ? "طلب التبادل"
-            : "طلب الكتاب"}
-        </button>
-
-      </div>
-    `;
-
-    booksContainer.appendChild(card);
-  });
 }
 
+// ===== أدوات مساعدة =====
 function escapeHTML(text) {
-  if (!text) return "";
-
+  if (text === undefined || text === null) return "";
   return String(text)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -161,181 +69,184 @@ function escapeHTML(text) {
     .replaceAll("'", "&#039;");
 }
 
-function requestBook(index) {
-  showToast("تم إرسال طلبك بنجاح ✅");
+let toastTimer;
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
 }
 
-if (searchInput) {
-  searchInput.addEventListener("input", renderBooks);
+function toggleMenu() {
+  document.getElementById("nav")?.classList.toggle("open");
 }
 
-if (specialtyFilter) {
-  specialtyFilter.addEventListener("change", renderBooks);
-}
+// ===== عرض الكتب =====
+function getFilteredBooks() {
+  const search = (document.getElementById("searchInput")?.value || "")
+    .toLowerCase()
+    .trim();
+  const specialty = document.getElementById("specialtyFilter")?.value || "";
+  const type = document.getElementById("tradeFilter")?.value || "";
 
-if (typeFilter) {
-  typeFilter.addEventListener("change", renderBooks);
-}
-
-if (addBookForm) {
-
-  addBookForm.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    const formData = new FormData(addBookForm);
-
-    const book = {
-      name: formData.get("bookName"),
-      author: formData.get("author"),
-      subject: formData.get("subject"),
-      specialty: formData.get("specialty"),
-      price: Number(formData.get("price")) || 0,
-      type: formData.get("type"),
-      location: formData.get("location") || "غير محدد",
-      distance: 0
-    };
-
-    books.unshift(book);
-
-    saveBooks();
-    renderBooks();
-
-    addBookForm.reset();
-
-    showToast("تمت إضافة الكتاب بنجاح 📚");
-
-    document
-      .getElementById("books")
-      ?.scrollIntoView({
-        behavior: "smooth"
-      });
+  return books.filter((book) => {
+    const haystack = `${book.name} ${book.author} ${book.subject}`.toLowerCase();
+    const matchesSearch = !search || haystack.includes(search);
+    const matchesSpecialty = !specialty || book.specialty === specialty;
+    const matchesType = !type || book.type === type;
+    return matchesSearch && matchesSpecialty && matchesType;
   });
 }
 
-function getLocation() {
+function renderBooks() {
+  const container = document.getElementById("booksContainer");
+  const emptyMessage = document.getElementById("emptyMessage");
+  if (!container) return;
 
-  if (!navigator.geolocation) {
-    showToast("المتصفح لا يدعم تحديد الموقع");
-    return;
-  }
+  const filtered = getFilteredBooks();
+  container.innerHTML = "";
 
-  showToast("جاري تحديد موقعك... 📍");
+  if (emptyMessage) emptyMessage.classList.toggle("hidden", filtered.length !== 0);
 
-  navigator.geolocation.getCurrentPosition(
+  filtered.forEach((book) => {
+    const index = books.indexOf(book);
+    const isSwap = book.type === "مقايضة";
 
-    position => {
+    const cover = book.image
+      ? `<div class="book-cover" style="background-image:url('${book.image}')"></div>`
+      : `<div class="book-cover">📚</div>`;
 
-      showToast("تم تحديد موقعك بنجاح 📍");
+    const priceBlock = isSwap
+      ? `<div class="book-price">مقايضة</div>
+         <p>مطلوب: ${escapeHTML(book.wanted || "غير محدد")}</p>`
+      : `<div class="book-price">${escapeHTML(book.price)} ريال</div>`;
 
-      console.log(
-        "Latitude:",
-        position.coords.latitude
-      );
+    const card = document.createElement("article");
+    card.className = "book-card";
+    card.innerHTML = `
+      ${cover}
+      <div class="book-info">
+        <span class="book-type ${isSwap ? "swap" : ""}">${escapeHTML(book.type)}</span>
+        <h3>${escapeHTML(book.name)}</h3>
+        <p>المادة: ${escapeHTML(book.subject)}</p>
+        <p>المؤلف: ${escapeHTML(book.author || "غير محدد")}</p>
+        <p>التخصص: ${escapeHTML(book.specialty)}</p>
+        <p>📍 ${escapeHTML(book.location || "غير محدد")}</p>
+        ${priceBlock}
+        <button class="btn btn-primary" onclick="requestBook(${index})">
+          ${isSwap ? "طلب التبادل 🔄" : "طلب الشراء 🛒"}
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
 
-      console.log(
-        "Longitude:",
-        position.coords.longitude
-      );
-    },
+  updateTotal();
+}
 
-    () => {
-      showToast("تعذر الوصول إلى موقعك");
-    }
+function updateTotal() {
+  const total = document.getElementById("totalBooks");
+  if (total) total.textContent = books.length;
+}
+
+function filterBooks() {
+  renderBooks();
+}
+
+function requestBook(index) {
+  const book = books[index];
+  if (!book) return;
+  showToast(
+    book.type === "مقايضة"
+      ? "تم إرسال طلب التبادل بنجاح ✅"
+      : "تم إرسال طلب الشراء بنجاح ✅"
   );
 }
 
-function startQRScanner() {
+// ===== نموذج الإضافة =====
+function togglePrice() {
+  const type = document.getElementById("bookTrade")?.value;
+  const priceField = document.getElementById("priceField");
+  const wantedField = document.getElementById("wantedField");
+  const isSwap = type === "مقايضة";
+  priceField?.classList.toggle("hidden", isSwap);
+  wantedField?.classList.toggle("hidden", !isSwap);
+}
 
-  const reader = document.getElementById("reader");
+function previewImage(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
 
-  if (!reader) return;
-
-  if (typeof Html5Qrcode === "undefined") {
-    showToast("ماسح QR غير متوفر حاليًا");
+  if (!file.type.startsWith("image/")) {
+    showToast("الرجاء اختيار ملف صورة");
     return;
   }
 
-  const scanner = new Html5Qrcode("reader");
-
-  scanner.start(
-
-    { facingMode: "environment" },
-
-    {
-      fps: 10,
-      qrbox: 250
-    },
-
-    decodedText => {
-
-      showToast("تمت قراءة QR بنجاح ✅");
-
-      try {
-
-        const data = JSON.parse(decodedText);
-
-        if (data.name) {
-          const input =
-            document.querySelector(
-              '[name="bookName"]'
-            );
-
-          if (input) {
-            input.value = data.name;
-          }
-        }
-
-      } catch {
-
-        const input =
-          document.querySelector(
-            '[name="bookName"]'
-          );
-
-        if (input) {
-          input.value = decodedText;
-        }
-      }
-
-      scanner.stop();
-
-    },
-
-    errorMessage => {
-      console.log(errorMessage);
+  const reader = new FileReader();
+  reader.onload = () => {
+    currentImage = reader.result;
+    const preview = document.getElementById("imagePreview");
+    if (preview) {
+      preview.innerHTML = `<img src="${currentImage}" alt="معاينة غلاف الكتاب">`;
     }
-
-  ).catch(error => {
-
-    console.log(error);
-    showToast("تعذر تشغيل الكاميرا");
-
-  });
+    document.getElementById("clearImage")?.classList.remove("hidden");
+  };
+  reader.readAsDataURL(file);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function clearImage() {
+  currentImage = "";
+  const preview = document.getElementById("imagePreview");
+  if (preview) {
+    preview.innerHTML =
+      '<span class="image-placeholder">📚<br><small>لا توجد صورة بعد</small></span>';
+  }
+  const input = document.getElementById("bookImage");
+  if (input) input.value = "";
+  document.getElementById("clearImage")?.classList.add("hidden");
+}
 
+function addBook(event) {
+  event.preventDefault();
+
+  const type = document.getElementById("bookTrade").value;
+  const isSwap = type === "مقايضة";
+
+  const book = {
+    name: document.getElementById("bookName").value.trim(),
+    subject: document.getElementById("bookSubject").value.trim(),
+    author: document.getElementById("bookAuthor").value.trim(),
+    specialty: document.getElementById("bookSpecialty").value,
+    type,
+    price: isSwap ? 0 : Number(document.getElementById("bookPrice").value) || 0,
+    wanted: isSwap ? document.getElementById("wantedBook").value.trim() : "",
+    location: document.getElementById("bookLocation").value.trim() || "غير محدد",
+    image: currentImage
+  };
+
+  books.unshift(book);
+  saveBooks();
   renderBooks();
 
-  const locationButton =
-    document.getElementById("locationButton");
+  event.target.reset();
+  clearImage();
+  togglePrice();
 
-  if (locationButton) {
-    locationButton.addEventListener(
-      "click",
-      getLocation
+  showToast("تمت إضافة الكتاب بنجاح 📚");
+  document.getElementById("books")?.scrollIntoView({ behavior: "smooth" });
+}
+
+// ===== التهيئة =====
+document.addEventListener("DOMContentLoaded", () => {
+  renderBooks();
+  togglePrice();
+
+  // إغلاق قائمة الجوال عند الضغط على رابط
+  document.querySelectorAll("#nav a").forEach((link) => {
+    link.addEventListener("click", () =>
+      document.getElementById("nav")?.classList.remove("open")
     );
-  }
-
-  const qrButton =
-    document.getElementById("qrButton");
-
-  if (qrButton) {
-    qrButton.addEventListener(
-      "click",
-      startQRScanner
-    );
-  }
-
+  });
 });
