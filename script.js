@@ -542,7 +542,6 @@ function showRoleChoice() {
   document.querySelectorAll("main > section").forEach(section => section.classList.add("hidden"));
   document.getElementById("roleChoice")?.classList.remove("hidden");
   document.getElementById("siteNavbar")?.classList.add("hidden");
-  document.getElementById("siteFooter")?.classList.add("hidden");
   document.getElementById("nav")?.classList.remove("open");
   history.replaceState(null, "", "#welcome");
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -556,7 +555,6 @@ function showMarketplace() {
     if (section.id !== "roleChoice" && section.id !== "userAccount" && section.id !== "admin") section.classList.remove("hidden");
   });
   document.getElementById("siteNavbar")?.classList.remove("hidden");
-  document.getElementById("siteFooter")?.classList.remove("hidden");
   history.replaceState(null, "", "#home");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -569,7 +567,6 @@ function openUserAuth(event) {
   panel.classList.remove("hidden");
   document.getElementById("roleChoice")?.classList.add("hidden");
   document.getElementById("siteNavbar")?.classList.add("hidden");
-  document.getElementById("siteFooter")?.classList.add("hidden");
   document.querySelectorAll("main > section").forEach(section => {
     if (section.id !== "userAccount") section.classList.add("hidden");
   });
@@ -708,7 +705,6 @@ function openAdmin(event) {
   panel.classList.remove("hidden");
   document.getElementById("roleChoice")?.classList.add("hidden");
   document.getElementById("siteNavbar")?.classList.add("hidden");
-  document.getElementById("siteFooter")?.classList.add("hidden");
   document.querySelectorAll("main > section").forEach(section => {
     if (section.id !== "admin") section.classList.add("hidden");
   });
@@ -732,11 +728,8 @@ function loginAdmin(event) {
     document.getElementById("adminLogin")?.classList.add("hidden");
     document.getElementById("adminDashboard")?.classList.remove("hidden");
     document.getElementById("adminLoginForm")?.reset();
-    showMarketplace();
-    document.getElementById("admin")?.classList.remove("hidden");
-    document.getElementById("adminDashboard")?.classList.remove("hidden");
     renderAdmin();
-    showToast("تم تسجيل دخول المدير بنجاح");
+    showToast("تم تسجيل الدخول بنجاح");
   } else {
     error?.classList.remove("hidden");
     const passwordInput = document.getElementById("adminPassword");
@@ -753,11 +746,7 @@ function logoutAdmin() {
 
 function closeAdmin() {
   document.getElementById("admin")?.classList.add("hidden");
-  if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "true") {
-    showMarketplace();
-  } else {
-    showRoleChoice();
-  }
+  showRoleChoice();
 }
 
 function renderAdmin() {
