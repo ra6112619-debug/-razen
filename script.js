@@ -538,12 +538,38 @@ function getCurrentUser() {
   }
 }
 
+function showRoleChoice() {
+  document.querySelectorAll("main > section").forEach(section => section.classList.add("hidden"));
+  document.getElementById("roleChoice")?.classList.remove("hidden");
+  document.getElementById("siteNavbar")?.classList.add("hidden");
+  document.getElementById("siteFooter")?.classList.add("hidden");
+  document.getElementById("nav")?.classList.remove("open");
+  history.replaceState(null, "", "#welcome");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showMarketplace() {
+  document.getElementById("roleChoice")?.classList.add("hidden");
+  document.getElementById("userAccount")?.classList.add("hidden");
+  document.getElementById("admin")?.classList.add("hidden");
+  document.querySelectorAll("main > section").forEach(section => {
+    if (section.id !== "roleChoice" && section.id !== "userAccount" && section.id !== "admin") section.classList.remove("hidden");
+  });
+  document.getElementById("siteNavbar")?.classList.remove("hidden");
+  document.getElementById("siteFooter")?.classList.remove("hidden");
+  history.replaceState(null, "", "#home");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function openUserAuth(event) {
   if (event) event.preventDefault();
   const panel = document.getElementById("userAccount");
   if (!panel) return;
 
   panel.classList.remove("hidden");
+  document.getElementById("roleChoice")?.classList.add("hidden");
+  document.getElementById("siteNavbar")?.classList.add("hidden");
+  document.getElementById("siteFooter")?.classList.add("hidden");
   document.querySelectorAll("main > section").forEach(section => {
     if (section.id !== "userAccount") section.classList.add("hidden");
   });
@@ -621,7 +647,7 @@ function registerUser(event) {
   sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify({ name, username }));
 
   document.getElementById("userRegisterForm")?.reset();
-  closeUserAuth();
+  showMarketplace();
   showToast("تم إنشاء حسابك بنجاح 🎉");
 }
 
@@ -641,7 +667,7 @@ function loginUser(event) {
   error?.classList.add("hidden");
   sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify({ name: user.name, username: user.username }));
   document.getElementById("userLoginForm")?.reset();
-  closeUserAuth();
+  showMarketplace();
   showToast("تم تسجيل الدخول بنجاح");
 }
 
@@ -655,11 +681,7 @@ function logoutUser() {
 
 function closeUserAuth() {
   document.getElementById("userAccount")?.classList.add("hidden");
-  document.querySelectorAll("main > section").forEach(section => {
-    if (section.id !== "userAccount" && section.id !== "admin") section.classList.remove("hidden");
-  });
-  history.replaceState(null, "", "#home");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  showRoleChoice();
 }
 
 function goToAddBook() {
@@ -667,7 +689,7 @@ function goToAddBook() {
     openUserAuth();
     return;
   }
-  closeUserAuth();
+  showMarketplace();
   document.getElementById("add")?.scrollIntoView({ behavior: "smooth" });
 }
 
@@ -684,6 +706,9 @@ function openAdmin(event) {
   const panel = document.getElementById("admin");
   if (!panel) return;
   panel.classList.remove("hidden");
+  document.getElementById("roleChoice")?.classList.add("hidden");
+  document.getElementById("siteNavbar")?.classList.add("hidden");
+  document.getElementById("siteFooter")?.classList.add("hidden");
   document.querySelectorAll("main > section").forEach(section => {
     if (section.id !== "admin") section.classList.add("hidden");
   });
@@ -707,8 +732,11 @@ function loginAdmin(event) {
     document.getElementById("adminLogin")?.classList.add("hidden");
     document.getElementById("adminDashboard")?.classList.remove("hidden");
     document.getElementById("adminLoginForm")?.reset();
+    showMarketplace();
+    document.getElementById("admin")?.classList.remove("hidden");
+    document.getElementById("adminDashboard")?.classList.remove("hidden");
     renderAdmin();
-    showToast("تم تسجيل الدخول بنجاح");
+    showToast("تم تسجيل دخول المدير بنجاح");
   } else {
     error?.classList.remove("hidden");
     const passwordInput = document.getElementById("adminPassword");
@@ -725,11 +753,11 @@ function logoutAdmin() {
 
 function closeAdmin() {
   document.getElementById("admin")?.classList.add("hidden");
-  document.querySelectorAll("main > section").forEach(section => {
-    if (section.id !== "admin" && section.id !== "userAccount") section.classList.remove("hidden");
-  });
-  history.replaceState(null, "", "#home");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "true") {
+    showMarketplace();
+  } else {
+    showRoleChoice();
+  }
 }
 
 function renderAdmin() {
@@ -774,6 +802,7 @@ document.addEventListener(
     books = loadBooks();
 
     renderBooks();
+    showRoleChoice();
 
     togglePrice();
 
