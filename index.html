@@ -29,6 +29,7 @@
       <a href="#books">الكتب</a>
       <a href="#add">أضف كتاب</a>
       <a href="#about">عن المشروع</a>
+      <a href="#userAccount" onclick="openUserAuth(event)">دخول المستخدم</a>
       <a href="#admin" onclick="openAdmin(event)">لوحة المدير</a>
     </nav>
 
@@ -39,6 +40,29 @@
 
 
 <main>
+
+<!-- ================= اختيار نوع الدخول ================= -->
+<section id="roleChoice" class="role-choice-section">
+  <div class="container role-choice-wrap">
+    <span class="small-title">أهلًا بك في منصتنا</span>
+    <h1>مرحبًا بك في رَزين 📚</h1>
+    <p class="role-choice-subtitle">اختاري نوع الدخول للمتابعة</p>
+    <div class="role-choice-grid">
+      <button class="role-choice-card" type="button" onclick="openAdmin(event)">
+        <span class="role-choice-icon" aria-hidden="true">🛡️</span>
+        <strong>دخول المدير</strong>
+        <span>تسجيل دخول المدير وإدارة الكتب والمستخدمين.</span>
+        <span class="role-choice-link">الدخول إلى لوحة المدير ←</span>
+      </button>
+      <button class="role-choice-card" type="button" onclick="openUserAuth(event)">
+        <span class="role-choice-icon" aria-hidden="true">👤</span>
+        <strong>دخول المستخدم</strong>
+        <span>تسجيل الدخول أو إنشاء حساب جديد لبيع الكتب ومبادلتها.</span>
+        <span class="role-choice-link">الدخول إلى حساب المستخدم ←</span>
+      </button>
+    </div>
+  </div>
+</section>
 
 <!-- ================= HERO ================= -->
 <section id="home" class="hero">
@@ -62,7 +86,6 @@
       <div class="hero-buttons">
         <a href="#books" class="btn btn-primary">تصفّح الكتب</a>
         <a href="#add" class="btn btn-secondary">أضف كتابك</a>
-        <button type="button" class="btn btn-outline" onclick="openAdmin(event)">دخول المدير</button>
       </div>
 
       <div class="stats">
@@ -278,6 +301,64 @@
   </div>
 </section>
 
+
+
+<!-- ================= USER ACCOUNT ================= -->
+<section id="userAccount" class="section admin-section hidden">
+  <div class="container">
+    <div id="userAuthPanel" class="admin-login-card">
+      <span class="small-title">حساب الطالب</span>
+      <h2 id="userAuthTitle">تسجيل دخول المستخدم</h2>
+      <p class="muted">سجّل الدخول أو أنشئ حسابًا جديدًا للمشاركة في رَزين.</p>
+
+      <form id="userLoginForm" onsubmit="loginUser(event)">
+        <label>اسم المستخدم
+          <input id="userLoginUsername" autocomplete="username" required placeholder="اسم المستخدم">
+        </label>
+        <label>كلمة المرور
+          <input id="userLoginPassword" type="password" autocomplete="current-password" required placeholder="كلمة المرور">
+        </label>
+        <p id="userLoginError" class="admin-login-error hidden" role="alert">اسم المستخدم أو كلمة المرور غير صحيحة.</p>
+        <button class="btn btn-primary submit" type="submit">دخول</button>
+      </form>
+
+      <form id="userRegisterForm" class="hidden" onsubmit="registerUser(event)">
+        <label>الاسم
+          <input id="userFullName" autocomplete="name" required maxlength="60" placeholder="اكتبي اسمك">
+        </label>
+        <label>اسم المستخدم
+          <input id="userRegisterUsername" autocomplete="username" required minlength="3" maxlength="24" placeholder="اختاري اسم مستخدم">
+        </label>
+        <label>كلمة المرور
+          <input id="userRegisterPassword" type="password" autocomplete="new-password" required minlength="6" placeholder="6 أحرف أو أكثر">
+        </label>
+        <label>تأكيد كلمة المرور
+          <input id="userConfirmPassword" type="password" autocomplete="new-password" required minlength="6" placeholder="أعيدي كتابة كلمة المرور">
+        </label>
+        <p id="userRegisterError" class="admin-login-error hidden" role="alert"></p>
+        <button class="btn btn-primary submit" type="submit">إنشاء حساب</button>
+      </form>
+
+      <p class="user-switch">
+        <span id="userSwitchText">ليس لديك حساب؟</span>
+        <button class="user-switch-btn" id="userSwitchButton" type="button" onclick="toggleUserAuthMode()">إنشاء حساب جديد</button>
+      </p>
+      <button class="btn btn-outline user-back" type="button" onclick="closeUserAuth()">العودة للموقع</button>
+    </div>
+
+    <div id="userDashboard" class="admin-login-card hidden">
+      <span class="small-title">حسابك في رَزين</span>
+      <h2>مرحبًا <span id="userWelcomeName">بك</span> 👋</h2>
+      <p class="muted">أنتِ الآن مسجلة الدخول ويمكنك إضافة كتابك ومشاركته مع الطلاب.</p>
+      <div class="user-dashboard-actions">
+        <button class="btn btn-primary" type="button" onclick="goToAddBook()">إضافة كتاب</button>
+        <button class="btn btn-outline" type="button" onclick="logoutUser()">تسجيل الخروج</button>
+        <button class="btn btn-outline" type="button" onclick="closeUserAuth()">العودة للموقع</button>
+      </div>
+      <p class="admin-note">ملاحظة: هذا تسجيل تجريبي محفوظ في متصفح الجهاز فقط، وليس نظام حسابات آمنًا أو قاعدة بيانات مشتركة.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ================= ADMIN DASHBOARD ================= -->
 <section id="admin" class="section admin-section hidden">

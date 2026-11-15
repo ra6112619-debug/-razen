@@ -512,6 +512,174 @@ function escapeHtml(value) {
 }
 
 
+
+/* =========================
+   حسابات المستخدمين (نسخة تجريبية محلية)
+   الحسابات تحفظ في المتصفح فقط وليست مصادقة آمنة.
+========================= */
+const USERS_STORAGE_KEY = "razenUsers";
+const USER_SESSION_KEY = "razenUserSession";
+let userAuthMode = "login";
+
+function getUsers() {
+  try {
+    const users = JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) || "[]");
+    return Array.isArray(users) ? users : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function getCurrentUser() {
+  try {
+    return JSON.parse(sessionStorage.getItem(USER_SESSION_KEY) || "null");
+  } catch (error) {
+    return null;
+  }
+}
+
+function openUserAuth(event) {
+  if (event) event.preventDefault();
+  const panel = document.getElementById("userAccount");
+  if (!panel) return;
+
+  panel.classList.remove("hidden");
+  document.querySelectorAll("main > section").forEach(section => {
+    if (section.id !== "userAccount") section.classList.add("hidden");
+  });
+
+  const currentUser = getCurrentUser();
+  document.getElementById("userAuthPanel")?.classList.toggle("hidden", !!currentUser);
+  document.getElementById("userDashboard")?.classList.toggle("hidden", !currentUser);
+
+  if (currentUser) {
+    const welcome = document.getElementById("userWelcomeName");
+    if (welcome) welcome.textContent = currentUser.name || currentUser.username;
+  } else {
+    setUserAuthMode("login");
+  }
+
+  history.replaceState(null, "", "#userAccount");
+  document.getElementById("nav")?.classList.remove("open");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function setUserAuthMode(mode) {
+  userAuthMode = mode;
+  const loginForm = document.getElementById("userLoginForm");
+  const registerForm = document.getElementById("userRegisterForm");
+  const title = document.getElementById("userAuthTitle");
+  const switchText = document.getElementById("userSwitchText");
+  const switchButton = document.getElementById("userSwitchButton");
+
+  loginForm?.classList.toggle("hidden", mode !== "login");
+  registerForm?.classList.toggle("hidden", mode !== "register");
+
+  if (title) title.textContent = mode === "login" ? "تسجيل دخول المستخدم" : "إنشاء حساب جديد";
+  if (switchText) switchText.textContent = mode === "login" ? "ليس لديك حساب؟" : "لديك حساب بالفعل؟";
+  if (switchButton) switchButton.textContent = mode === "login" ? "إنشاء حساب جديد" : "تسجيل الدخول";
+
+  document.getElementById("userLoginError")?.classList.add("hidden");
+  document.getElementById("userRegisterError")?.classList.add("hidden");
+}
+
+function toggleUserAuthMode() {
+  setUserAuthMode(userAuthMode === "login" ? "register" : "login");
+}
+
+function registerUser(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("userFullName")?.value.trim() || "";
+  const username = document.getElementById("userRegisterUsername")?.value.trim().toLowerCase() || "";
+  const password = document.getElementById("userRegisterPassword")?.value || "";
+  const confirmPassword = document.getElementById("userConfirmPassword")?.value || "";
+  const error = document.getElementById("userRegisterError");
+
+  const showError = message => {
+    if (error) {
+      error.textContent = message;
+      error.classList.remove("hidden");
+    }
+  };
+
+  if (name.length < 2) return showError("اكتبي اسمًا صحيحًا.");
+  if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
+    return showError("اسم المستخدم يجب أن يكون 3 أحرف أو أكثر، وبالإنجليزية أو الأرقام.");
+  }
+  if (password.length < 6) return showError("كلمة المرور يجب أن تكون 6 أحرف على الأقل.");
+  if (password !== confirmPassword) return showError("كلمتا المرور غير متطابقتين.");
+
+  const users = getUsers();
+  if (users.some(user => user.username === username)) {
+    return showError("اسم المستخدم مستخدم بالفعل، اختاري اسمًا آخر.");
+  }
+
+  const newUser = { name, username, password };
+  users.push(newUser);
+  localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+  sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify({ name, username }));
+
+  document.getElementById("userAuthPanel")?.classList.add("hidden");
+  document.getElementById("userDashboard")?.classList.remove("hidden");
+  const welcome = document.getElementById("userWelcomeName");
+  if (welcome) welcome.textContent = name;
+
+  document.getElementById("userRegisterForm")?.reset();
+  showToast("تم إنشاء حسابك بنجاح 🎉");
+}
+
+function loginUser(event) {
+  event.preventDefault();
+
+  const username = document.getElementById("userLoginUsername")?.value.trim().toLowerCase() || "";
+  const password = document.getElementById("userLoginPassword")?.value || "";
+  const error = document.getElementById("userLoginError");
+  const user = getUsers().find(item => item.username === username && item.password === password);
+
+  if (!user) {
+    error?.classList.remove("hidden");
+    return;
+  }
+
+  error?.classList.add("hidden");
+  sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify({ name: user.name, username: user.username }));
+  document.getElementById("userAuthPanel")?.classList.add("hidden");
+  document.getElementById("userDashboard")?.classList.remove("hidden");
+
+  const welcome = document.getElementById("userWelcomeName");
+  if (welcome) welcome.textContent = user.name || user.username;
+
+  document.getElementById("userLoginForm")?.reset();
+  showToast("تم تسجيل الدخول بنجاح");
+}
+
+function logoutUser() {
+  sessionStorage.removeItem(USER_SESSION_KEY);
+  document.getElementById("userDashboard")?.classList.add("hidden");
+  document.getElementById("userAuthPanel")?.classList.remove("hidden");
+  setUserAuthMode("login");
+  showToast("تم تسجيل الخروج");
+}
+
+function closeUserAuth() {
+  document.getElementById("userAccount")?.classList.add("hidden");
+  document.querySelectorAll("main > section").forEach(section => {
+    if (section.id !== "userAccount" && section.id !== "admin") section.classList.remove("hidden");
+  });
+  history.replaceState(null, "", "#home");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function goToAddBook() {
+  if (!getCurrentUser()) {
+    openUserAuth();
+    return;
+  }
+  closeUserAuth();
+  document.getElementById("add")?.scrollIntoView({ behavior: "smooth" });
+}
+
 /* =========================
    تسجيل دخول ولوحة المدير
    دخول تجريبي للعرض الأكاديمي فقط؛ لا يُعد مصادقة آمنة.
@@ -567,7 +735,7 @@ function logoutAdmin() {
 function closeAdmin() {
   document.getElementById("admin")?.classList.add("hidden");
   document.querySelectorAll("main > section").forEach(section => {
-    if (section.id !== "admin") section.classList.remove("hidden");
+    if (section.id !== "admin" && section.id !== "userAccount") section.classList.remove("hidden");
   });
   history.replaceState(null, "", "#home");
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -617,9 +785,6 @@ document.addEventListener(
     renderBooks();
 
     togglePrice();
-
-    // فتح تسجيل دخول المدير مباشرة عند زيارة الرابط #admin
-    if (window.location.hash === "#admin") openAdmin();
 
     console.log("رَزين يعمل بنجاح 📚");
     console.log("عدد الكتب:", books.length);
