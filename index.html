@@ -17,7 +17,7 @@
 
 <body>
 
-<header class="navbar">
+<header class="navbar hidden" id="siteNavbar">
   <div class="container nav-content">
 
     <a href="#home" class="logo">
@@ -42,25 +42,19 @@
 <main>
 
 <!-- ================= اختيار نوع الدخول ================= -->
-<section id="roleChoice" class="role-choice-section">
-  <div class="container role-choice-wrap">
+<section id="roleChoice" class="role-choice">
+  <div class="role-card">
     <span class="small-title">أهلًا بك في منصتنا</span>
     <h1>مرحبًا بك في رَزين 📚</h1>
-    <p class="role-choice-subtitle">اختاري نوع الدخول للمتابعة</p>
-    <div class="role-choice-grid">
-      <button class="role-choice-card" type="button" onclick="openAdmin(event)">
-        <span class="role-choice-icon" aria-hidden="true">🛡️</span>
-        <strong>دخول المدير</strong>
-        <span>تسجيل دخول المدير وإدارة الكتب والمستخدمين.</span>
-        <span class="role-choice-link">الدخول إلى لوحة المدير ←</span>
-      </button>
-      <button class="role-choice-card" type="button" onclick="openUserAuth(event)">
-        <span class="role-choice-icon" aria-hidden="true">👤</span>
-        <strong>دخول المستخدم</strong>
-        <span>تسجيل الدخول أو إنشاء حساب جديد لبيع الكتب ومبادلتها.</span>
-        <span class="role-choice-link">الدخول إلى حساب المستخدم ←</span>
-      </button>
-    </div>
+    <p>اختاري نوع الدخول للمتابعة</p>
+    <button class="role-option" type="button" onclick="openAdmin()">
+      <span class="role-number">1</span>
+      <span class="role-copy"><strong>دخول المدير</strong><small>تسجيل دخول المدير وإدارة الكتب والمستخدمين.</small><b>الدخول إلى لوحة المدير ←</b></span>
+    </button>
+    <button class="role-option" type="button" onclick="openUserAuth()">
+      <span class="role-number">2</span>
+      <span class="role-copy"><strong>دخول المستخدم</strong><small>تسجيل الدخول أو إنشاء حساب جديد لبيع الكتب ومبادلتها.</small><b>الدخول إلى حساب المستخدم ←</b></span>
+    </button>
   </div>
 </section>
 
