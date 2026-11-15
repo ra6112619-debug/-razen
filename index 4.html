@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6c4df6">
+
+  <title>رَزين | منصة تداول وبيع الكتب الجامعية</title>
+  <meta name="description" content="رَزين منصة عربية تربط طلاب الجامعات لبيع الكتب الجامعية أو مقايضتها، مع البحث والفلترة حسب التخصص ونوع العملية.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="container nav-content">
+
+    <a href="#home" class="logo">
+      رَزين <span aria-hidden="true">📚</span>
+    </a>
+
+    <nav id="nav" class="nav-links">
+      <a href="#home">الرئيسية</a>
+      <a href="#books">الكتب</a>
+      <a href="#add">أضف كتاب</a>
+      <a href="#about">عن المشروع</a>
+      <a href="#userAccount" onclick="openUserAuth(event)">دخول المستخدم</a>
+      <a href="#admin" onclick="openAdmin(event)">لوحة المدير</a>
+    </nav>
+
+    <button class="menu-btn" aria-label="القائمة" onclick="toggleMenu()">☰</button>
+
+  </div>
+</header>
+
+
+<main>
+
+<!-- ================= HERO ================= -->
+<section id="home" class="hero">
+  <div class="container hero-content">
+
+    <div class="hero-text">
+      <span class="small-title">منصة تداول الكتب الجامعية</span>
+
+      <h1>
+        كتابك القديم
+        <br>
+        <span>قد يكون مرجع طالبٍ آخر.</span>
+      </h1>
+
+      <p>
+        رَزين يربط الطلاب ببعضهم لبيع الكتب الجامعية
+        بأسعار مخفّضة أو مقايضتها بكتب أخرى،
+        مع البحث والفلترة حسب التخصص ونوع العملية.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#books" class="btn btn-primary">تصفّح الكتب</a>
+        <a href="#add" class="btn btn-secondary">أضف كتابك</a>
+      </div>
+
+      <div class="stats">
+        <div>
+          <strong id="totalBooks">0</strong>
+          <span>كتاب متاح</span>
+        </div>
+        <div>
+          <strong>🔄</strong>
+          <span>بيع ومقايضة</span>
+        </div>
+        <div>
+          <strong>🎓</strong>
+          <span>من طالب لطالب</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="floating-card top">📍 الأقرب إليك</div>
+
+      <div class="books-animation">
+        <div class="book book-one">JAVA<small>101</small></div>
+        <div class="book book-two">DATABASE<small>SYSTEMS</small></div>
+        <div class="book book-three">DATA<small>STRUCTURES</small></div>
+      </div>
+
+      <div class="floating-card bottom">🔎 بحث ذكي</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+<section class="section">
+  <div class="container">
+    <div class="features">
+
+      <div class="feature-card">
+        <div class="feature-icon">📷</div>
+        <h3>صور واضحة</h3>
+        <p>ارفع صورة غلاف الكتاب ليراها الطلاب قبل الطلب.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔎</div>
+        <h3>بحث وفلترة</h3>
+        <p>ابحث بالاسم أو المؤلف وفلتر حسب التخصص ونوع العملية.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>المقايضة</h3>
+        <p>اعرض كتابك واستبدله بكتاب يحتاجه طالب آخر.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= BOOKS ================= -->
+<section id="books" class="section section-alt">
+  <div class="container">
+
+    <div class="section-heading">
+      <div>
+        <span class="small-title">المكتبة</span>
+        <h2>ابحث عن مرجعك</h2>
+      </div>
+    </div>
+
+    <div class="filters">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔎 ابحث باسم الكتاب أو المادة أو المؤلف"
+        oninput="filterBooks()"
+      >
+
+      <select id="specialtyFilter" onchange="filterBooks()">
+        <option value="">كل التخصصات</option>
+        <option value="علوم الحاسب">علوم الحاسب</option>
+        <option value="هندسة البرمجيات">هندسة البرمجيات</option>
+        <option value="نظم المعلومات">نظم المعلومات</option>
+        <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
+        <option value="الرياضيات">الرياضيات</option>
+        <option value="إدارة الأعمال">إدارة الأعمال</option>
+      </select>
+
+      <select id="tradeFilter" onchange="filterBooks()">
+        <option value="">بيع أو مقايضة</option>
+        <option value="بيع">بيع</option>
+        <option value="مقايضة">مقايضة</option>
+      </select>
+    </div>
+
+    <div id="booksContainer" class="books-grid"></div>
+
+    <div id="emptyMessage" class="empty hidden">
+      لا توجد كتب مطابقة للبحث.
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= ADD BOOK ================= -->
+<section id="add" class="section">
+  <div class="container">
+
+    <div class="section-heading">
+      <div>
+        <span class="small-title">شارك كتابك</span>
+        <h2>أضف كتابًا جديدًا</h2>
+        <p class="muted">أضف بيانات الكتاب وصورته ليظهر للطلاب مباشرة.</p>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <form id="bookForm" onsubmit="addBook(event)">
+
+        <!-- Image upload -->
+        <div class="image-upload">
+          <div class="image-preview" id="imagePreview">
+            <span class="image-placeholder">📚<br><small>لا توجد صورة بعد</small></span>
+          </div>
+          <label class="upload-btn">
+            📷 رفع صورة الكتاب
+            <input
+              type="file"
+              id="bookImage"
+              accept="image/*"
+              onchange="previewImage(event)"
+              hidden
+            >
+          </label>
+          <button type="button" class="clear-image hidden" id="clearImage" onclick="clearImage()">إزالة الصورة</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            اسم الكتاب
+            <input id="bookName" required placeholder="مثال: أساسيات Java">
+          </label>
+
+          <label>
+            اسم المادة
+            <input id="bookSubject" required placeholder="مثال: برمجة 101">
+          </label>
+
+          <label>
+            المؤلف
+            <input id="bookAuthor" placeholder="اسم المؤلف">
+          </label>
+
+          <label>
+            التخصص
+            <select id="bookSpecialty" required>
+              <option value="">اختر التخصص</option>
+              <option>علوم الحاسب</option>
+              <option>هندسة البرمجيات</option>
+              <option>نظم المعلومات</option>
+              <option>الذكاء الاصطناعي</option>
+              <option>الرياضيات</option>
+              <option>إدارة الأعمال</option>
+            </select>
+          </label>
+
+          <label>
+            نوع العملية
+            <select id="bookTrade" onchange="togglePrice()">
+              <option value="بيع">بيع</option>
+              <option value="مقايضة">مقايضة</option>
+            </select>
+          </label>
+
+          <label id="priceField">
+            السعر بالريال
+            <input id="bookPrice" type="number" min="0" placeholder="مثال: 40">
+          </label>
+
+          <label id="wantedField" class="hidden">
+            الكتاب المطلوب للمقايضة
+            <input id="wantedBook" placeholder="مثال: قواعد البيانات">
+          </label>
+
+          <label>
+            الجامعة / الموقع
+            <input id="bookLocation" placeholder="مثال: جامعة الملك سعود">
+          </label>
+        </div>
+
+        <button class="btn btn-primary submit" type="submit">نشر الكتاب</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="section section-alt about">
+  <div class="container about-content">
+    <span class="small-title">مشروع علوم الحاسب</span>
+    <h2>عن رَزين</h2>
+    <p>
+      رَزين منصة تربط الطلاب لتداول الكتب الجامعية عن طريق البيع
+      أو المقايضة، مع توفير البحث والفلترة حسب التخصص ونوع العملية.
+      الهدف تقليل تكلفة الكتب وإعادة الاستفادة منها بين الطلاب.
+    </p>
+  </div>
+</section>
+
+
+
+<!-- ================= USER ACCOUNT ================= -->
+<section id="userAccount" class="section admin-section hidden">
+  <div class="container">
+    <div id="userAuthPanel" class="admin-login-card">
+      <span class="small-title">حساب الطالب</span>
+      <h2 id="userAuthTitle">تسجيل دخول المستخدم</h2>
+      <p class="muted">سجّل الدخول أو أنشئ حسابًا جديدًا للمشاركة في رَزين.</p>
+
+      <form id="userLoginForm" onsubmit="loginUser(event)">
+        <label>اسم المستخدم
+          <input id="userLoginUsername" autocomplete="username" required placeholder="اسم المستخدم">
+        </label>
+        <label>كلمة المرور
+          <input id="userLoginPassword" type="password" autocomplete="current-password" required placeholder="كلمة المرور">
+        </label>
+        <p id="userLoginError" class="admin-login-error hidden" role="alert">اسم المستخدم أو كلمة المرور غير صحيحة.</p>
+        <button class="btn btn-primary submit" type="submit">دخول</button>
+      </form>
+
+      <form id="userRegisterForm" class="hidden" onsubmit="registerUser(event)">
+        <label>الاسم
+          <input id="userFullName" autocomplete="name" required maxlength="60" placeholder="اكتبي اسمك">
+        </label>
+        <label>اسم المستخدم
+          <input id="userRegisterUsername" autocomplete="username" required minlength="3" maxlength="24" placeholder="اختاري اسم مستخدم">
+        </label>
+        <label>كلمة المرور
+          <input id="userRegisterPassword" type="password" autocomplete="new-password" required minlength="6" placeholder="6 أحرف أو أكثر">
+        </label>
+        <label>تأكيد كلمة المرور
+          <input id="userConfirmPassword" type="password" autocomplete="new-password" required minlength="6" placeholder="أعيدي كتابة كلمة المرور">
+        </label>
+        <p id="userRegisterError" class="admin-login-error hidden" role="alert"></p>
+        <button class="btn btn-primary submit" type="submit">إنشاء حساب</button>
+      </form>
+
+      <p class="user-switch">
+        <span id="userSwitchText">ليس لديك حساب؟</span>
+        <button class="user-switch-btn" id="userSwitchButton" type="button" onclick="toggleUserAuthMode()">إنشاء حساب جديد</button>
+      </p>
+      <button class="btn btn-outline user-back" type="button" onclick="closeUserAuth()">العودة للموقع</button>
+    </div>
+
+    <div id="userDashboard" class="admin-login-card hidden">
+      <span class="small-title">حسابك في رَزين</span>
+      <h2>مرحبًا <span id="userWelcomeName">بك</span> 👋</h2>
+      <p class="muted">أنتِ الآن مسجلة الدخول ويمكنك إضافة كتابك ومشاركته مع الطلاب.</p>
+      <div class="user-dashboard-actions">
+        <button class="btn btn-primary" type="button" onclick="goToAddBook()">إضافة كتاب</button>
+        <button class="btn btn-outline" type="button" onclick="logoutUser()">تسجيل الخروج</button>
+        <button class="btn btn-outline" type="button" onclick="closeUserAuth()">العودة للموقع</button>
+      </div>
+      <p class="admin-note">ملاحظة: هذا تسجيل تجريبي محفوظ في متصفح الجهاز فقط، وليس نظام حسابات آمنًا أو قاعدة بيانات مشتركة.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+<section id="admin" class="section admin-section hidden">
+  <div class="container">
+    <div id="adminLogin" class="admin-login-card">
+      <span class="small-title">منطقة محمية للمدير</span>
+      <h2>تسجيل دخول المدير</h2>
+      <p class="muted">أدخلي بيانات المدير للوصول إلى لوحة التحكم.</p>
+      <form id="adminLoginForm" onsubmit="loginAdmin(event)">
+        <label>اسم المستخدم
+          <input id="adminUsername" autocomplete="username" required placeholder="اسم المستخدم">
+        </label>
+        <label>كلمة المرور
+          <input id="adminPassword" type="password" autocomplete="current-password" required placeholder="كلمة المرور">
+        </label>
+        <p id="adminLoginError" class="admin-login-error hidden" role="alert">بيانات الدخول غير صحيحة.</p>
+        <button class="btn btn-primary submit" type="submit">دخول إلى لوحة المدير</button>
+        <button class="btn btn-outline" type="button" onclick="closeAdmin()">العودة للموقع</button>
+      </form>
+    </div>
+    <div id="adminDashboard" class="hidden">
+    <div class="section-heading">
+      <div><span class="small-title">إدارة المنصة</span><h2>لوحة المدير</h2>
+      <p class="muted">ملخص الكتب المنشورة وإدارة المحتوى المحفوظ على هذا المتصفح.</p></div>
+    </div>
+    <div class="admin-stats">
+      <div class="admin-stat"><span>إجمالي الكتب</span><strong id="adminTotal">0</strong></div>
+      <div class="admin-stat"><span>كتب للبيع</span><strong id="adminSales">0</strong></div>
+      <div class="admin-stat"><span>كتب للمقايضة</span><strong id="adminTrades">0</strong></div>
+    </div>
+    <div class="admin-list-head"><h3>الكتب المنشورة</h3><div class="admin-actions"><button class="btn btn-outline" type="button" onclick="logoutAdmin()">تسجيل الخروج</button><button class="btn btn-outline" type="button" onclick="closeAdmin()">العودة للموقع</button></div></div>
+    <div id="adminBooks" class="admin-books"></div>
+    <p class="admin-note">تنبيه للمشروع: تسجيل الدخول هنا تجريبي من جهة المتصفح، والكتب محفوظة محليًا باستخدام Local Storage وليست قاعدة بيانات مشتركة. لا يُعد هذا نظام مصادقة آمنًا للاستخدام الفعلي.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<footer>
+  <div class="container">
+    <strong>رَزين 📚</strong>
+    <p>من طالب إلى طالب</p>
+  </div>
+</footer>
+
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+  
+
+</body>
+</html>

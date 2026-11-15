@@ -620,12 +620,8 @@ function registerUser(event) {
   localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
   sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify({ name, username }));
 
-  document.getElementById("userAuthPanel")?.classList.add("hidden");
-  document.getElementById("userDashboard")?.classList.remove("hidden");
-  const welcome = document.getElementById("userWelcomeName");
-  if (welcome) welcome.textContent = name;
-
   document.getElementById("userRegisterForm")?.reset();
+  closeUserAuth();
   showToast("تم إنشاء حسابك بنجاح 🎉");
 }
 
@@ -644,13 +640,8 @@ function loginUser(event) {
 
   error?.classList.add("hidden");
   sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify({ name: user.name, username: user.username }));
-  document.getElementById("userAuthPanel")?.classList.add("hidden");
-  document.getElementById("userDashboard")?.classList.remove("hidden");
-
-  const welcome = document.getElementById("userWelcomeName");
-  if (welcome) welcome.textContent = user.name || user.username;
-
   document.getElementById("userLoginForm")?.reset();
+  closeUserAuth();
   showToast("تم تسجيل الدخول بنجاح");
 }
 
