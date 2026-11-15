@@ -511,6 +511,99 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+
+/* =========================
+   تسجيل دخول ولوحة المدير
+   دخول تجريبي للعرض الأكاديمي فقط؛ لا يُعد مصادقة آمنة.
+========================= */
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "Razen@2026";
+const ADMIN_SESSION_KEY = "razenAdminSession";
+
+function openAdmin(event) {
+  if (event) event.preventDefault();
+  const panel = document.getElementById("admin");
+  if (!panel) return;
+  panel.classList.remove("hidden");
+  document.querySelectorAll("main > section").forEach(section => {
+    if (section.id !== "admin") section.classList.add("hidden");
+  });
+  const loggedIn = sessionStorage.getItem(ADMIN_SESSION_KEY) === "true";
+  document.getElementById("adminLogin")?.classList.toggle("hidden", loggedIn);
+  document.getElementById("adminDashboard")?.classList.toggle("hidden", !loggedIn);
+  if (loggedIn) renderAdmin();
+  history.replaceState(null, "", "#admin");
+  document.getElementById("nav")?.classList.remove("open");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function loginAdmin(event) {
+  event.preventDefault();
+  const username = document.getElementById("adminUsername")?.value.trim();
+  const password = document.getElementById("adminPassword")?.value;
+  const error = document.getElementById("adminLoginError");
+  if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
+    error?.classList.add("hidden");
+    document.getElementById("adminLogin")?.classList.add("hidden");
+    document.getElementById("adminDashboard")?.classList.remove("hidden");
+    document.getElementById("adminLoginForm")?.reset();
+    renderAdmin();
+    showToast("تم تسجيل الدخول بنجاح");
+  } else {
+    error?.classList.remove("hidden");
+    const passwordInput = document.getElementById("adminPassword");
+    if (passwordInput) passwordInput.value = "";
+  }
+}
+
+function logoutAdmin() {
+  sessionStorage.removeItem(ADMIN_SESSION_KEY);
+  document.getElementById("adminDashboard")?.classList.add("hidden");
+  document.getElementById("adminLogin")?.classList.remove("hidden");
+  showToast("تم تسجيل الخروج");
+}
+
+function closeAdmin() {
+  document.getElementById("admin")?.classList.add("hidden");
+  document.querySelectorAll("main > section").forEach(section => {
+    if (section.id !== "admin") section.classList.remove("hidden");
+  });
+  history.replaceState(null, "", "#home");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderAdmin() {
+  const total = document.getElementById("adminTotal");
+  const sales = document.getElementById("adminSales");
+  const trades = document.getElementById("adminTrades");
+  const list = document.getElementById("adminBooks");
+  if (!list) return;
+  if (total) total.textContent = books.length;
+  if (sales) sales.textContent = books.filter(b => b.type === "بيع").length;
+  if (trades) trades.textContent = books.filter(b => b.type === "مقايضة").length;
+  list.innerHTML = "";
+  if (!books.length) {
+    list.innerHTML = '<p class="muted">لا توجد كتب منشورة حاليًا.</p>';
+    return;
+  }
+  books.forEach((book, index) => {
+    const item = document.createElement("div");
+    item.className = "admin-book-row";
+    item.innerHTML = `<div><strong>${escapeHtml(book.name)}</strong><small>${escapeHtml(book.subject || "")} · ${escapeHtml(book.location || "غير محدد")} · ${escapeHtml(book.type || "بيع")}</small></div><button class="delete-btn" type="button" onclick="adminDeleteBook(${index})">حذف</button>`;
+    list.appendChild(item);
+  });
+}
+
+function adminDeleteBook(index) {
+  if (!confirm("هل تريدين حذف هذا الكتاب نهائيًا من الكتب المحفوظة على هذا الجهاز؟")) return;
+  books.splice(index, 1);
+  saveBooks();
+  renderBooks();
+  renderAdmin();
+  showToast("تم حذف الكتاب");
+}
+
 /* =========================
    تشغيل المشروع
 ========================= */
@@ -524,6 +617,9 @@ document.addEventListener(
     renderBooks();
 
     togglePrice();
+
+    // فتح تسجيل دخول المدير مباشرة عند زيارة الرابط #admin
+    if (window.location.hash === "#admin") openAdmin();
 
     console.log("رَزين يعمل بنجاح 📚");
     console.log("عدد الكتب:", books.length);

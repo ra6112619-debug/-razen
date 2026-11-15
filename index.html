@@ -29,6 +29,7 @@
       <a href="#books">الكتب</a>
       <a href="#add">أضف كتاب</a>
       <a href="#about">عن المشروع</a>
+      <a href="#admin" onclick="openAdmin(event)">لوحة المدير</a>
     </nav>
 
     <button class="menu-btn" aria-label="القائمة" onclick="toggleMenu()">☰</button>
@@ -61,6 +62,7 @@
       <div class="hero-buttons">
         <a href="#books" class="btn btn-primary">تصفّح الكتب</a>
         <a href="#add" class="btn btn-secondary">أضف كتابك</a>
+        <button type="button" class="btn btn-outline" onclick="openAdmin(event)">دخول المدير</button>
       </div>
 
       <div class="stats">
@@ -273,6 +275,43 @@
       أو المقايضة، مع توفير البحث والفلترة حسب التخصص ونوع العملية.
       الهدف تقليل تكلفة الكتب وإعادة الاستفادة منها بين الطلاب.
     </p>
+  </div>
+</section>
+
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+<section id="admin" class="section admin-section hidden">
+  <div class="container">
+    <div id="adminLogin" class="admin-login-card">
+      <span class="small-title">منطقة محمية للمدير</span>
+      <h2>تسجيل دخول المدير</h2>
+      <p class="muted">أدخلي بيانات المدير للوصول إلى لوحة التحكم.</p>
+      <form id="adminLoginForm" onsubmit="loginAdmin(event)">
+        <label>اسم المستخدم
+          <input id="adminUsername" autocomplete="username" required placeholder="اسم المستخدم">
+        </label>
+        <label>كلمة المرور
+          <input id="adminPassword" type="password" autocomplete="current-password" required placeholder="كلمة المرور">
+        </label>
+        <p id="adminLoginError" class="admin-login-error hidden" role="alert">بيانات الدخول غير صحيحة.</p>
+        <button class="btn btn-primary submit" type="submit">دخول إلى لوحة المدير</button>
+        <button class="btn btn-outline" type="button" onclick="closeAdmin()">العودة للموقع</button>
+      </form>
+    </div>
+    <div id="adminDashboard" class="hidden">
+    <div class="section-heading">
+      <div><span class="small-title">إدارة المنصة</span><h2>لوحة المدير</h2>
+      <p class="muted">ملخص الكتب المنشورة وإدارة المحتوى المحفوظ على هذا المتصفح.</p></div>
+    </div>
+    <div class="admin-stats">
+      <div class="admin-stat"><span>إجمالي الكتب</span><strong id="adminTotal">0</strong></div>
+      <div class="admin-stat"><span>كتب للبيع</span><strong id="adminSales">0</strong></div>
+      <div class="admin-stat"><span>كتب للمقايضة</span><strong id="adminTrades">0</strong></div>
+    </div>
+    <div class="admin-list-head"><h3>الكتب المنشورة</h3><div class="admin-actions"><button class="btn btn-outline" type="button" onclick="logoutAdmin()">تسجيل الخروج</button><button class="btn btn-outline" type="button" onclick="closeAdmin()">العودة للموقع</button></div></div>
+    <div id="adminBooks" class="admin-books"></div>
+    <p class="admin-note">تنبيه للمشروع: تسجيل الدخول هنا تجريبي من جهة المتصفح، والكتب محفوظة محليًا باستخدام Local Storage وليست قاعدة بيانات مشتركة. لا يُعد هذا نظام مصادقة آمنًا للاستخدام الفعلي.</p>
+    </div>
   </div>
 </section>
 
